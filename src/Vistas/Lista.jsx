@@ -1,37 +1,20 @@
-import React,{Component, useEffect, useState} from 'react';
-import { Table, Row, Col, Button, Modal, Form } from 'react-bootstrap';
+import React,{useEffect, useState} from 'react';
+import { Table, Row, Col, Button, Modal } from 'react-bootstrap';
 import DatosModal from '../Componentes/DatosModal';
-import DatosPersonales from '../Componentes/DatosPersonales';
-import {Variables} from '../Configs/Variables'
+
+import { ObtenerProspectos, validarFormatoStatus } from '../Services/ListaService';
 
 
 export const Lista = () =>{
-
     const [prospectos, setProspectos] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [prospecto, setProspecto] = useState();
 
     useEffect(() => {
-        fetch(Variables.API_URL+'Prospectos/ObtenerProspectos')
-        .then(response=>  response.json()).then(respuesta => {console.log(respuesta); setProspectos(respuesta)});
+        ObtenerProspectos().then((respuesta) => {
+            setProspectos(respuesta);
+        });
     }, []);
-
-    const validarFormatoStatus = (Status) => {
-        switch(Status){
-            case "ENVIADO":
-                return "text-muted";
-            case "AUTORIZADO":
-                return "text-success";
-            case "RECHAZADO":
-                return "text-danger";
-        }
-    }
-
-    const mostrarModal = () => {
-        setShowModal(true);
-    }
-
-    
     
     return(
         <>
